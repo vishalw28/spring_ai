@@ -1,0 +1,34 @@
+services:
+  ollama:
+
+# ollama pull hf.co/bartowski/Llama-3.2-1B-Instruct-GGUF (~1.3GB)
+# ollama pull phi3:mini (~2.3GB)
+# ollama pull qwen2:0.5b (only 394MB) — Great for testing if your Spring AI code works without melting your hard drive.
+
+# Note: In your application.properties, make sure the model name matches exactly what you pulled
+# eg. spring.ai.ollama.chat.options.model=qwen2:0.5b
+
+    image: ollama/ollama:latest 
+    container_name: ollama
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama:/root/.ollama
+
+# Open WebUI is used because Ollama does not have its own interface—
+# it runs as a background "engine" that you interact with via terminal
+# commands or APIs. Open WebUI provides a ChatGPT-like dashboard that 
+# makes it much easier to manage your models and have conversations. 
+#
+  open-webui:
+    image: ghcr.io/open-webui/open-webui:main
+    container_name: open-webui
+    ports:
+      - "3000:8080"
+    environment:
+      - OLLAMA_BASE_URL=http://ollama:11434
+    depends_on:
+      - ollama
+
+volumes:
+  ollama:
