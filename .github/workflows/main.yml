@@ -6,4 +6,4 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
-      - run: mvn clean install -DskipTests=true
+      - run: ../../../mvn clean install -DskipTests=true
