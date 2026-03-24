@@ -13,7 +13,7 @@ jobs:
         uses: actions/setup-java@v3
         with:
           distribution: 'temurin'
-          java-version: '17' # Use your project's required JDK version
+          java-version: '21' # Use your project's required JDK version
 
       - name: Build with Maven
         run: mvn clean install -DskipTests=true
