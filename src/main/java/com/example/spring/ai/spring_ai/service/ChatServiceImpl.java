@@ -17,6 +17,10 @@ public class ChatServiceImpl implements ChatService{
 
     public ChatServiceImpl(org.springframework.ai.chat.client.ChatClient.Builder builder) {
         this.chatClient = builder
+            // Default options or default related methods helps you while building the big system.
+            // eg. You're building the coding assistance. Due to below configuration it always act as coding expert.
+            .defaultSystem("You are a helpful coding assistant. You are an expert in coding.")
+            // .defaultAdvisors() => Advisors are like interceptors
             .defaultOptions(OpenAiChatOptions.builder()
                 .model("gpt-4o-mini")
                 .temperature(0.3)
