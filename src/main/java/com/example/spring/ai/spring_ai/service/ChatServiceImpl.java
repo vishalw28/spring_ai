@@ -1,12 +1,12 @@
 package com.example.spring.ai.spring_ai.service;
 
-import org.springframework.ai.chat.client.ChatClient;
-import org.springframework.ai.chat.prompt.Prompt;
-import org.springframework.stereotype.Service;
-
 import java.util.List;
 
+import org.springframework.ai.chat.client.ChatClient;
+import org.springframework.ai.chat.prompt.Prompt;
+import org.springframework.ai.openai.OpenAiChatOptions;
 import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.stereotype.Service;
 
 import com.example.spring.ai.spring_ai.entity.Tut;
 
@@ -19,26 +19,16 @@ public class ChatServiceImpl implements ChatService{
         this.chatClient = builder.build();
     }
 
-    
-    
-
-
     @Override
     public List<Tut> chat(String query) {
         List<Tut> content =chatClient.
-            prompt(new Prompt(query)) // we can pass prompt here too.
+            prompt(new Prompt(query, OpenAiChatOptions.builder()
+                .model("gpt-4o-mini")
+                .temperature(0.3)
+                .maxTokens(100)
+                .build())) // we can pass prompt here too.
             .call()
-            .entity(new ParameterizedTypeReference<List<Tut>>(){}); // With entity it 
-            /**
-                Result:
-                {
-                    title: "Java Programming Language",
-                    content: "Java is a high-level, class-based, object-oriented programming language that is designed to have as few implementation dependencies as possible. It is a general-purpose programming language that is widely used for building enterprise-scale applications, mobile applications, and web applications. Java is known for its portability across platforms, thanks to the Java Virtual Machine (JVM), which allows Java programs to run on any device that has the JVM installed.",
-                    createdYear: "1995"
-                }
-
-                But same 
-             */
+            .entity(new ParameterizedTypeReference<List<Tut>>(){});
 
         System.out.println(content);
             //.content();
