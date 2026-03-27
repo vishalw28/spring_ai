@@ -2,8 +2,7 @@ package com.example.spring.ai.spring_ai.controller;
 
 
 import org.springframework.ai.chat.client.ChatClient;
-import org.springframework.ai.ollama.OllamaChatModel;
-import org.springframework.ai.openai.OpenAiChatModel;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,9 +17,9 @@ public class ChatController {
     private ChatClient openAiChatClient;
     private ChatClient ollamaChatClient;
 
-    public ChatController(OpenAiChatModel openAiChatModel, OllamaChatModel ollamaChatModel){
-        this.openAiChatClient = ChatClient.builder(openAiChatModel).build();
-        this.ollamaChatClient = ChatClient.builder(ollamaChatModel).build();
+    public ChatController(@Qualifier("openAiChatClient") ChatClient openAiChatClient, @Qualifier("ollamaChatClient") ChatClient ollamaChatClient){
+        this.openAiChatClient = openAiChatClient;
+        this.ollamaChatClient = ollamaChatClient;
     }
 
     @GetMapping("/chat")
