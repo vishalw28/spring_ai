@@ -16,17 +16,19 @@ public class ChatServiceImpl implements ChatService{
     private final ChatClient chatClient;
 
     public ChatServiceImpl(org.springframework.ai.chat.client.ChatClient.Builder builder) {
-        this.chatClient = builder.build();
+        this.chatClient = builder
+            .defaultOptions(OpenAiChatOptions.builder()
+                .model("gpt-4o-mini")
+                .temperature(0.3)
+                .maxTokens(100)
+                .build())
+            .build();
     }
 
     @Override
     public List<Tut> chat(String query) {
         List<Tut> content =chatClient.
-            prompt(new Prompt(query, OpenAiChatOptions.builder()
-                .model("gpt-4o-mini")
-                .temperature(0.3)
-                .maxTokens(100)
-                .build())) // we can pass prompt here too.
+            prompt(new Prompt(query)) // we can pass prompt here too.
             .call()
             .entity(new ParameterizedTypeReference<List<Tut>>(){});
 
