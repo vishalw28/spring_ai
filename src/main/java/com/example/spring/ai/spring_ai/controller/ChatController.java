@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.spring.ai.spring_ai.entity.Tut;
 import com.example.spring.ai.spring_ai.service.ChatService;
 
 
@@ -19,7 +20,7 @@ public class ChatController {
     private ChatService chatService;
 
     @GetMapping("/chat")
-    public ResponseEntity<String> chat(@RequestParam(value="q") String query){
+    public ResponseEntity<Tut> chat(@RequestParam(value="q") String query){
         var resultResponse = chatService.chat(query);
         return ResponseEntity.ok(resultResponse);
     }

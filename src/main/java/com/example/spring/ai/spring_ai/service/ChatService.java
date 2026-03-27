@@ -1,5 +1,7 @@
 package com.example.spring.ai.spring_ai.service;
 
+import com.example.spring.ai.spring_ai.entity.Tut;
+
 public interface ChatService {
-    String chat(String query);
+    Tut chat(String query);
 }

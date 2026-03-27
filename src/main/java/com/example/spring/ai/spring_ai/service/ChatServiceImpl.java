@@ -4,6 +4,8 @@ import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.prompt.Prompt;
 import org.springframework.stereotype.Service;
 
+import com.example.spring.ai.spring_ai.entity.Tut;
+
 @Service
 public class ChatServiceImpl implements ChatService{
 
@@ -18,25 +20,21 @@ public class ChatServiceImpl implements ChatService{
 
 
     @Override
-    public String chat(String query) {
-    
-        // Prompt prompt = new Prompt(quer)
+    public Tut chat(String query) {
         var content =chatClient.
             prompt(new Prompt(query)) // we can pass prompt here too.
-            // .user(prompt)
-            // .system("As an expert in cricket")
             .call()
-            .chatResponse() // ChatResponse gives the metadata such as generation, assistent msg,
-            // .getMetadata(); 
+            .entity(Tut.class); // With entity it 
             /**
-                MetaDataResult: 
-                { id: chatcmpl-******, usage: DefaultUsage{promptTokens=8, completionTokens=9, totalTokens=17}, rateLimit: { @type: org.springframework.ai.openai.metadata.OpenAiRateLimit, requestsLimit: 10000, requestsRemaining: 9999, requestsReset: PT1M4S, tokensLimit: 200000; tokensRemaining: 199997; tokensReset: PT0S } }
-            
-            */
-           .getResult()
-           .getOutput()
-           .getText();
+                Result:
+                {
+                    title: "Java Programming Language",
+                    content: "Java is a high-level, class-based, object-oriented programming language that is designed to have as few implementation dependencies as possible. It is a general-purpose programming language that is widely used for building enterprise-scale applications, mobile applications, and web applications. Java is known for its portability across platforms, thanks to the Java Virtual Machine (JVM), which allows Java programs to run on any device that has the JVM installed.",
+                    createdYear: "1995"
+                }
 
+                But same 
+             */
 
         System.out.println(content);
             //.content();
