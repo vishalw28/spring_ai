@@ -2,7 +2,6 @@ package com.example.spring.ai.spring_ai.controller;
 
 
 import org.springframework.ai.chat.client.ChatClient;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,17 +13,22 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping
 public class ChatController {
 
-    private ChatClient openAiChatClient;
-    private ChatClient ollamaChatClient;
+    private ChatClient chatClient;
+    // private ChatClient openAiChatClient;
+    // private ChatClient ollamaChatClient;
 
-    public ChatController(@Qualifier("openAiChatClient") ChatClient openAiChatClient, @Qualifier("ollamaChatClient") ChatClient ollamaChatClient){
-        this.openAiChatClient = openAiChatClient;
-        this.ollamaChatClient = ollamaChatClient;
+    // public ChatController(@Qualifier("openAiChatClient") ChatClient openAiChatClient, @Qualifier("ollamaChatClient") ChatClient ollamaChatClient){
+    //     this.openAiChatClient = openAiChatClient;
+    //     this.ollamaChatClient = ollamaChatClient;
+    // }
+
+    public ChatController(ChatClient.Builder builder){
+        chatClient = builder.build();
     }
 
     @GetMapping("/chat")
     public ResponseEntity<String> chat(@RequestParam(value="q") String param){
-        var resultResponse = ollamaChatClient.prompt(param).call().content();
+        var resultResponse = chatClient.prompt(param).call().content();
         return ResponseEntity.ok(resultResponse);
     }
     
