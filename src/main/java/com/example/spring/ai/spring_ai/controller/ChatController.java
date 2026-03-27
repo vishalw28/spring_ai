@@ -1,5 +1,6 @@
 package com.example.spring.ai.spring_ai.controller;
 
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +21,7 @@ public class ChatController {
     private ChatService chatService;
 
     @GetMapping("/chat")
-    public ResponseEntity<Tut> chat(@RequestParam(value="q") String query){
+    public ResponseEntity<List<Tut>> chat(@RequestParam(value="q") String query){
         var resultResponse = chatService.chat(query);
         return ResponseEntity.ok(resultResponse);
     }

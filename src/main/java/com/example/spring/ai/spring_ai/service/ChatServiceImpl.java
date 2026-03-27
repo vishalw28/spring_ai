@@ -4,6 +4,10 @@ import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.prompt.Prompt;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
+import org.springframework.core.ParameterizedTypeReference;
+
 import com.example.spring.ai.spring_ai.entity.Tut;
 
 @Service
@@ -20,11 +24,11 @@ public class ChatServiceImpl implements ChatService{
 
 
     @Override
-    public Tut chat(String query) {
-        var content =chatClient.
+    public List<Tut> chat(String query) {
+        List<Tut> content =chatClient.
             prompt(new Prompt(query)) // we can pass prompt here too.
             .call()
-            .entity(Tut.class); // With entity it 
+            .entity(new ParameterizedTypeReference<List<Tut>>(){}); // With entity it 
             /**
                 Result:
                 {
