@@ -9,17 +9,24 @@ import org.springframework.ai.chat.prompt.Prompt;
 import org.springframework.ai.chat.prompt.PromptTemplate;
 import org.springframework.ai.chat.prompt.SystemPromptTemplate;
 import org.springframework.ai.openai.OpenAiChatOptions;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 
 import com.example.spring.ai.spring_ai.entity.Tut;
 
-import lombok.experimental.var;
+
+
+
 
 @Service
 public class ChatServiceImpl implements ChatService{
 
     private final ChatClient chatClient;
+
+    @Value("classpath:prompt/user-message.st")
+    private Resource userMessage;
 
     public ChatServiceImpl(org.springframework.ai.chat.client.ChatClient.Builder builder) {
         this.chatClient = builder
@@ -27,11 +34,11 @@ public class ChatServiceImpl implements ChatService{
             // eg. You're building the coding assistance. Due to below configuration it always act as coding expert.
             // .defaultSystem("You are a helpful coding assistant. You are an expert in coding.")
             // // .defaultAdvisors() => Advisors are like interceptors
-            // .defaultOptions(OpenAiChatOptions.builder()
+            .defaultOptions(OpenAiChatOptions.builder()
             //     .model("gpt-4o-mini")
             //     .temperature(0.3)
-            //     .maxTokens(100) // To reduce the output
-            //     .build())
+                .maxTokens(200) // To reduce the output
+                .build())
             .build();
     }
 
@@ -63,11 +70,16 @@ public class ChatServiceImpl implements ChatService{
                 Tell about with {techName} with an example of {example}
                 """;
         
-        PromptTemplate userPromptTemplate = PromptTemplate.builder().template(query).build();
+        // PromptTemplate userPromptTemplate = PromptTemplate.builder()
+        //     .template(query)
+        //     .build();
+        PromptTemplate userPromptTemplate = PromptTemplate.builder().resource(userMessage)
+            .build();
         // // Render the template
         
         var userMsg = userPromptTemplate.createMessage(Map.of("techName", "Spring",
-            "example", "Spring exception"
+            "example", "Spring exception",
+            "subject","system design"
         ));
 
         Prompt prompt = new Prompt(systemMsg, userMsg);
