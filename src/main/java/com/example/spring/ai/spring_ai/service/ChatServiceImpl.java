@@ -4,13 +4,17 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.ai.chat.client.ChatClient;
+import org.springframework.ai.chat.messages.Message;
 import org.springframework.ai.chat.prompt.Prompt;
 import org.springframework.ai.chat.prompt.PromptTemplate;
+import org.springframework.ai.chat.prompt.SystemPromptTemplate;
 import org.springframework.ai.openai.OpenAiChatOptions;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.stereotype.Service;
 
 import com.example.spring.ai.spring_ai.entity.Tut;
+
+import lombok.experimental.var;
 
 @Service
 public class ChatServiceImpl implements ChatService{
@@ -26,7 +30,7 @@ public class ChatServiceImpl implements ChatService{
             // .defaultOptions(OpenAiChatOptions.builder()
             //     .model("gpt-4o-mini")
             //     .temperature(0.3)
-            //     .maxTokens(100)
+            //     .maxTokens(100) // To reduce the output
             //     .build())
             .build();
     }
@@ -47,18 +51,27 @@ public class ChatServiceImpl implements ChatService{
     }
 
     public String chatTemplate(){
-        String query="""
+       
+        
+        var systemPromptTEmplate = SystemPromptTemplate.builder()
+            .template("You are a helpful conding assistant. You are an expert in coding")
+            .build();
+
+        var systemMsg = systemPromptTEmplate.createMessage();
+        
+         String query="""
                 Tell about with {techName} with an example of {example}
                 """;
-        PromptTemplate strTemplate = PromptTemplate.builder().template(query).build();
-        // Render the template
         
-        String renderedMsg = strTemplate.render(Map.of("techName", "Spring",
+        PromptTemplate userPromptTemplate = PromptTemplate.builder().template(query).build();
+        // // Render the template
+        
+        var userMsg = userPromptTemplate.createMessage(Map.of("techName", "Spring",
             "example", "Spring exception"
         ));
 
-        Prompt prompt = new Prompt(renderedMsg);
-        
+        Prompt prompt = new Prompt(systemMsg, userMsg);
+
         return this.chatClient.prompt(prompt).call().content();
     }
 }
