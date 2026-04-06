@@ -19,20 +19,23 @@ public class ChatServiceImpl implements ChatService{
         this.chatClient = builder
             // Default options or default related methods helps you while building the big system.
             // eg. You're building the coding assistance. Due to below configuration it always act as coding expert.
-            .defaultSystem("You are a helpful coding assistant. You are an expert in coding.")
-            // .defaultAdvisors() => Advisors are like interceptors
-            .defaultOptions(OpenAiChatOptions.builder()
-                .model("gpt-4o-mini")
-                .temperature(0.3)
-                .maxTokens(100)
-                .build())
+            // .defaultSystem("You are a helpful coding assistant. You are an expert in coding.")
+            // // .defaultAdvisors() => Advisors are like interceptors
+            // .defaultOptions(OpenAiChatOptions.builder()
+            //     .model("gpt-4o-mini")
+            //     .temperature(0.3)
+            //     .maxTokens(100)
+            //     .build())
             .build();
     }
 
     @Override
     public List<Tut> chat(String query) {
+        Prompt prompt = new Prompt(query);
+        String template = "As an expert in coding and programming. Always write a program in java. Now reply for this question: {query}";
         List<Tut> content =chatClient.
-            prompt(new Prompt(query)) // we can pass prompt here too.
+            prompt() // we can pass prompt here too.
+            .user(u -> u.text(template).param("query", query))
             .call()
             .entity(new ParameterizedTypeReference<List<Tut>>(){});
 

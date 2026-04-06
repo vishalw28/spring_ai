@@ -23,6 +23,11 @@ In that case don't forget to update application.properties file also
 ```spring.ai.ollama.chat.options.model=qwen2:0.5b```
 
 
+## Prompts Templates and Stuffing
+Ref: https://youtu.be/t4uHBaYhrKw?si=OW94h-gMxOVDgB2n
+- A prompt is what you send to a model. An ordered list of messages (system/user/assistant/tool) plus options.
+- A prompt template is builder that lets you define that prompt with placeholders, then render it with runtime values. It can return a string, a message, or Full prompt ready for ChatModel.call()
+
 
 
 
