@@ -1,9 +1,11 @@
 package com.example.spring.ai.spring_ai.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.prompt.Prompt;
+import org.springframework.ai.chat.prompt.PromptTemplate;
 import org.springframework.ai.openai.OpenAiChatOptions;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.stereotype.Service;
@@ -44,4 +46,19 @@ public class ChatServiceImpl implements ChatService{
        return content;
     }
 
+    public String chatTemplate(){
+        String query="""
+                Tell about with {techName} with an example of {example}
+                """;
+        PromptTemplate strTemplate = PromptTemplate.builder().template(query).build();
+        // Render the template
+        
+        String renderedMsg = strTemplate.render(Map.of("techName", "Spring",
+            "example", "Spring exception"
+        ));
+
+        Prompt prompt = new Prompt(renderedMsg);
+        
+        return this.chatClient.prompt(prompt).call().content();
+    }
 }

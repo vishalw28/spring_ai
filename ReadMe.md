@@ -24,11 +24,21 @@ In that case don't forget to update application.properties file also
 
 
 ## Prompts Templates and Stuffing
-Ref: https://youtu.be/t4uHBaYhrKw?si=OW94h-gMxOVDgB2n
+Ref: https://youtu.be/t4uHBaYhrKw?si=OW94h-gMxOVDgB2n (video#11)
 - A prompt is what you send to a model. An ordered list of messages (system/user/assistant/tool) plus options.
 - A prompt template is builder that lets you define that prompt with placeholders, then render it with runtime values. It can return a string, a message, or Full prompt ready for ChatModel.call()
 
 
+### Master Prompt Template
+Role
+- User=> i.e. user input
+- System => Define the rule, behavior or identity
+- Assistent => Represents AI response
+- Tools/Functions/call =>
 
 
-
+When to use 
+- prompt template: When you have complex structure of prompts, use this.
+    - You will receive some prompt -> which will be render using renderer then -> generates message -> pass to LLM
+eg. Tell about with {techName} with an example of {example}
+- Fluent API: When you have simple or generic structure.
