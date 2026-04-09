@@ -66,4 +66,7 @@ eg. Tell about with {techName} with an example of {example}
 
 ## Advisors
 - Works same like interceptors in spring i.e. before sending to LLM & after receiving the response from the LLM
-INFO
+- By Default all advisors implements the CallAdvisor interface
+- Default advisors such as 
+    - SimpleLogAdvisor: Which logs the message of configured log level for given package.
+    - SafeGuardAdvisor: Which blocks the sensitive content to be answered by LLM

@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.ai.chat.client.ChatClient;
+import org.springframework.ai.chat.client.advisor.SafeGuardAdvisor;
 import org.springframework.ai.chat.client.advisor.SimpleLoggerAdvisor;
 import org.springframework.ai.chat.messages.Message;
 import org.springframework.ai.chat.prompt.Prompt;
@@ -37,7 +38,8 @@ public class ChatServiceImpl implements ChatService{
             // Default options or default related methods helps you while building the big system.
             // eg. You're building the coding assistance. Due to below configuration it always act as coding expert.
             // .defaultSystem("You are a helpful coding assistant. You are an expert in coding.")
-            // // .defaultAdvisors() => Advisors are like interceptors
+            .defaultAdvisors(new SafeGuardAdvisor(List.of("game","cricket"))) // => Advisors are like interceptors
+
             .defaultOptions(OpenAiChatOptions.builder()
             //     .model("gpt-4o-mini")
             //     .temperature(0.3)
