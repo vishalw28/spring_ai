@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.ai.chat.client.ChatClient;
+import org.springframework.ai.chat.client.advisor.SimpleLoggerAdvisor;
 import org.springframework.ai.chat.messages.Message;
 import org.springframework.ai.chat.prompt.Prompt;
 import org.springframework.ai.chat.prompt.PromptTemplate;
@@ -28,6 +29,9 @@ public class ChatServiceImpl implements ChatService{
     @Value("classpath:prompt/user-message.st")
     private Resource userMessage;
 
+    @Value("classpath:prompt/system-message.st")
+    private Resource systemMessage;
+
     public ChatServiceImpl(org.springframework.ai.chat.client.ChatClient.Builder builder) {
         this.chatClient = builder
             // Default options or default related methods helps you while building the big system.
@@ -37,7 +41,7 @@ public class ChatServiceImpl implements ChatService{
             .defaultOptions(OpenAiChatOptions.builder()
             //     .model("gpt-4o-mini")
             //     .temperature(0.3)
-                .maxTokens(200) // To reduce the output
+                .maxTokens(100) // To reduce the output
                 .build())
             .build();
     }
@@ -85,5 +89,16 @@ public class ChatServiceImpl implements ChatService{
         Prompt prompt = new Prompt(systemMsg, userMsg);
 
         return this.chatClient.prompt(prompt).call().content();
+    }
+
+    @Override
+    public String chatTemplate(String query) {
+        return this.chatClient
+            .prompt()
+            .advisors(new SimpleLoggerAdvisor()) // Addin log advisor at each request level
+            .system(system -> system.text(systemMessage))
+            .user(user -> user.text(userMessage).param("subject", query))
+            .call()
+            .content();
     }
 }

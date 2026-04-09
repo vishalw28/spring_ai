@@ -7,4 +7,5 @@ import com.example.spring.ai.spring_ai.entity.Tut;
 public interface ChatService {
     List<Tut> chat(String query);
     String chatTemplate();
+    String chatTemplate(String query);
 }

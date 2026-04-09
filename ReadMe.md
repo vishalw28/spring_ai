@@ -63,3 +63,7 @@ eg. Tell about with {techName} with an example of {example}
 
 5) Make sure user don't pass the sensitive words.
 
+
+## Advisors
+- Works same like interceptors in spring i.e. before sending to LLM & after receiving the response from the LLM
+INFO

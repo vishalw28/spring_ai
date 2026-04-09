@@ -22,8 +22,17 @@ public class ChatController {
 
     @GetMapping("/chat")
     public ResponseEntity<List<Tut>> chat(@RequestParam(value="q") String query){
-        var resultResponse = chatService.chat(query);
+        // var resultResponse = chatService.chat(query);        
+        var resultResponse = chatService.chat(query);        
         return ResponseEntity.ok(resultResponse);
     }
+    
+    @GetMapping("/chatTemplate")
+    public ResponseEntity<String> chatTemplate(@RequestParam(value="q") String query){
+        var resultResponse = chatService.chatTemplate(query);        
+        return ResponseEntity.ok(resultResponse);
+    }
+
+
     
 }
