@@ -16,6 +16,7 @@ import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 
+import com.example.spring.ai.spring_ai.advisor.TokenPrintAdvisor;
 import com.example.spring.ai.spring_ai.entity.Tut;
 
 
@@ -38,7 +39,7 @@ public class ChatServiceImpl implements ChatService{
             // Default options or default related methods helps you while building the big system.
             // eg. You're building the coding assistance. Due to below configuration it always act as coding expert.
             // .defaultSystem("You are a helpful coding assistant. You are an expert in coding.")
-            .defaultAdvisors(new SafeGuardAdvisor(List.of("game","cricket"))) // => Advisors are like interceptors
+            .defaultAdvisors(new TokenPrintAdvisor(), new SafeGuardAdvisor(List.of("game","cricket"))) // => Advisors are like interceptors
 
             .defaultOptions(OpenAiChatOptions.builder()
             //     .model("gpt-4o-mini")
@@ -97,7 +98,7 @@ public class ChatServiceImpl implements ChatService{
     public String chatTemplate(String query) {
         return this.chatClient
             .prompt()
-            .advisors(new SimpleLoggerAdvisor()) // Addin log advisor at each request level
+            //.advisors(new SimpleLoggerAdvisor()) // Addin log advisor at each request level
             .system(system -> system.text(systemMessage))
             .user(user -> user.text(userMessage).param("subject", query))
             .call()
